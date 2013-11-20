@@ -409,6 +409,7 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						id: 'alt',
 						type: 'text',
 						label: lang.alt,
+						requiredContent: 'img[alt]',
 						setup: function( widget ) {
 							this.setValue( widget.data.alt );
 						},
