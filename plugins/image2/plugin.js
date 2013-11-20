@@ -123,6 +123,8 @@
 			}
 		},
 
+		requiredContent: 'img[src]',
+
 		// This widget converts style-driven dimensions to attributes.
 		contentTransformations: [
 			[ 'img[width]: sizeToAttribute' ]
