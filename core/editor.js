@@ -946,6 +946,8 @@
 			this._.data = eventData.dataValue;
 
 			!internal && this.fire( 'afterSetData', eventData );
+
+			!internal && this.fire( 'saveSnapshot' );
 		},
 
 		/**
