@@ -438,7 +438,6 @@
 						return false;
 				} else
 					this.editor.fire( 'change' );
-
 			}
 
 			// Drop future snapshots.
