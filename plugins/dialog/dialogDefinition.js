@@ -201,6 +201,9 @@
  *
  * When all UI elements in a tab are disabled, this tab will be disabled automatically.
  *
+ * **Note**: There's no possibility of including more than a single tag in
+ * `requiredContent` definition.
+ *
  * @property {String/Object/CKEDITOR.style} requiredContent
  */
 

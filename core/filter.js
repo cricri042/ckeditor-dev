@@ -2029,6 +2029,9 @@
  *
  * If this value is not provided, a feature will be always activated.
  *
+ * **Note**: There's no possibility of including more than a single tag in
+ * `requiredContent` definition.
+ *
  * @property {CKEDITOR.filter.contentRule} [requiredContent=null]
  */
 
