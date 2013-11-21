@@ -414,8 +414,8 @@
 		 * Saves a snapshot of the document image for later retrieval.
 		 */
 		save: function( onContentOnly, image, autoFireChange ) {
-			// Do not change snapshots stack when locked.
-			if ( this.locked )
+			// Do not change snapshots stack when locked or editor is not ready.
+			if ( this.locked || this.editor.status != 'ready' )
 				return false;
 
 			var snapshots = this.snapshots;
