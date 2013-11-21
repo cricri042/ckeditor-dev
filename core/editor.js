@@ -930,12 +930,21 @@
 		 * @param {String} data HTML code to replace the curent content in the editor.
 		 * @param {Function} callback Function to be called after the `setData` is completed.
 		 * @param {Boolean} internal Whether to suppress any event firing when copying data internally inside the editor.
+		 * @param {Boolean} noSnapshots Prevent method against firing 'saveSnapshot' event.
 		 */
-		setData: function( data, callback, internal ) {
+		setData: function( data, callback, internal, noSnapshots ) {
+			!internal && !noSnapshots && this.fire( 'saveSnapshot' );
+
 			if ( callback ) {
 				this.on( 'dataReady', function( evt ) {
 					evt.removeListener();
 					callback.call( evt.editor );
+				} );
+			}
+
+			if ( !internal && !noSnapshots ) {
+				this.once( 'dataReady', function( evt ) {
+					this.fire( 'saveSnapshot' );
 				} );
 			}
 
@@ -946,8 +955,6 @@
 			this._.data = eventData.dataValue;
 
 			!internal && this.fire( 'afterSetData', eventData );
-
-			!internal && this.fire( 'saveSnapshot' );
 		},
 
 		/**
