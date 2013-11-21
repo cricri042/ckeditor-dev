@@ -497,6 +497,10 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						id: 'hasCaption',
 						type: 'checkbox',
 						label: lang.captioned,
+						// Note: The following doesn't cover all the cases since
+						// 'figure' is also necessary but requiredContent supports
+						// a single tag only.
+						requiredContent: 'figcaption',
 						setup: function( widget ) {
 							this.setValue( widget.data.hasCaption );
 						},
