@@ -474,6 +474,10 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 					{
 						type: 'hbox',
 						id: 'alignment',
+						// Note: The following doesn't cover all the cases as
+						// 'div p{text-align}' and 'figure{float}' are also
+						// necessary but requiredContent supports a single tag only.
+						requiredContent: 'img{float}',
 						children: [
 							{
 								id: 'align',
