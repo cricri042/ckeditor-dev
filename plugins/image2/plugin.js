@@ -238,6 +238,7 @@
 		init: function() {
 			var helpers = CKEDITOR.plugins.image2,
 				image = this.parts.image,
+				editor = this.editor,
 				data = {
 					hasCaption: !!this.parts.caption,
 					src: image.getAttribute( 'src' ),
@@ -265,9 +266,11 @@
 			this.setData( data );
 
 			// Setup dynamic image resizing with mouse.
-			setupResizer( this );
+			// Don't initialize resizer when dimensions are disallowed (#11004).
+			if ( editor.filter.check( 'img[width,height]' ) )
+				setupResizer( this );
 
-			this.shiftState = helpers.stateShifter( this.editor );
+			this.shiftState = helpers.stateShifter( editor );
 
 			// Add widget editing option to its context menu.
 			this.on( 'contextMenu', function( evt ) {
@@ -573,9 +576,13 @@
 		// Only block widgets have one.
 		if ( !this.inline ) {
 			var resizeWrapper = el.getFirst( 'span' ),
-				img = resizeWrapper.getFirst( 'img' );
+				img;
 
-			resizeWrapper.replaceWith( img );
+			if ( resizeWrapper ) {
+				img = resizeWrapper.getFirst( 'img' );
+				resizeWrapper.replaceWith( img );
+			} else
+				img = el.getFirst( 'img' );
 		}
 
 		if ( align && align != 'none' ) {
@@ -654,7 +661,9 @@
 		var editor = widget.editor,
 			editable = editor.editable(),
 			doc = editor.document,
-			resizer = doc.createElement( 'span' );
+
+			// Store the resizer in a widget for testing (#11004).
+			resizer = widget.resizer = doc.createElement( 'span' );
 
 		resizer.addClass( 'cke_image2_resizer' );
 		resizer.setAttribute( 'title', editor.lang.image2.resizer );
