@@ -155,6 +155,13 @@
 				oldState = widget.oldData,
 				newState = widget.data;
 
+			// Image can't be captioned when figcaption is disallowed (#11004).
+			// Note: this check is poor since "figure" is also necessary.
+			// However requiredContent in dialogDefinition receives a single element
+			// so those rules won't be coherent anyway.
+			if ( newState.hasCaption && !editor.filter.check( 'figcaption' ) )
+				newState.hasCaption = false;
+
 			// Convert the internal form of the widget from the old state to the new one.
 			widget.shiftState( {
 				element: widget.element,
