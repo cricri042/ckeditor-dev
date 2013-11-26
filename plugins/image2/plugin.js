@@ -162,6 +162,13 @@
 			if ( newState.hasCaption && !editor.filter.check( 'figcaption' ) )
 				newState.hasCaption = false;
 
+			// Image can't be aligned when floating is disallowed (#11004).
+			// Note: this check is poor since "figure{float}", and "div p{text-align}"
+			// are also necessary. However requiredContent in dialogDefinition receives
+			// a single element so those rules won't be coherent anyway.
+			if ( newState.align != 'none' && !editor.filter.check( 'img{float}' ) )
+				newState.align = 'none';
+
 			// Convert the internal form of the widget from the old state to the new one.
 			widget.shiftState( {
 				element: widget.element,
