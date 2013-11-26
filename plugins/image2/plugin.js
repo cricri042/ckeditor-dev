@@ -928,14 +928,21 @@
 				if ( !widget )
 					return;
 
-				this.setState(
-					( widget.data.align == value ) ?
-							CKEDITOR.TRISTATE_ON
-						:
-							( value in allowed ) ?
-									CKEDITOR.TRISTATE_OFF
-								:
-									CKEDITOR.TRISTATE_DISABLED );
+				// Don't allow justify commands when widget
+				// alignment is disabled (#11004). See:
+				// image2#data and align in dialogDefinition
+				if ( !editor.filter.check( 'img{float}' ) )
+					this.setState( CKEDITOR.TRISTATE_DISABLED );
+				else {
+					this.setState(
+						( widget.data.align == value ) ?
+								CKEDITOR.TRISTATE_ON
+							:
+								( value in allowed ) ?
+										CKEDITOR.TRISTATE_OFF
+									:
+										CKEDITOR.TRISTATE_DISABLED );
+				}
 
 				evt.cancel();
 			} );
