@@ -36,7 +36,7 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 				resetButtonId: resetButtonId
 			} ),
 
-		helpers = CKEDITOR.plugins.image2,
+		helpers = CKEDITOR.plugins.image,
 
 		// Functions inherited from image2 plugin.
 		checkHasNaturalRatio = helpers.checkHasNaturalRatio,

@@ -227,7 +227,7 @@
 		},
 
 		init: function() {
-			var helpers = CKEDITOR.plugins.image2,
+			var helpers = CKEDITOR.plugins.image,
 				image = this.parts.image,
 				data = {
 					hasCaption: !!this.parts.caption,
@@ -275,7 +275,7 @@
 		downcast: downcastWidgetElement
 	};
 
-	CKEDITOR.plugins.image2 = {
+	CKEDITOR.plugins.image = {
 		stateShifter: function( editor ) {
 			// Tag name used for centering non-captioned widgets.
 			var doc = editor.document,
