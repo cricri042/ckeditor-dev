@@ -2371,9 +2371,8 @@
 	// WIDGET helpers ---------------------------------------------------------
 	//
 
-	var transparentImageData = 'data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw%3D%3D',
-		// LEFT, RIGHT, UP, DOWN, DEL, BACKSPACE - unblock default fake sel handlers.
-		keystrokesNotBlockedByWidget = { 37:1,38:1,39:1,40:1,8:1,46:1 };
+	// LEFT, RIGHT, UP, DOWN, DEL, BACKSPACE - unblock default fake sel handlers.
+	var keystrokesNotBlockedByWidget = { 37:1,38:1,39:1,40:1,8:1,46:1 };
 
 	function cancel( evt ) {
 		evt.cancel();
@@ -2517,7 +2516,7 @@
 		img.setAttributes( {
 			'class': 'cke_reset cke_widget_drag_handler',
 			'data-cke-widget-drag-handler': '1',
-			src: transparentImageData,
+			src: CKEDITOR.tools.transparentImageData,
 			width: DRAG_HANDLER_SIZE,
 			title: editor.lang.widget.move,
 			height: DRAG_HANDLER_SIZE
@@ -2657,7 +2656,7 @@
 
 		var img = new CKEDITOR.dom.element( 'img', widget.editor.document );
 		img.setAttributes( {
-			src: transparentImageData,
+			src: CKEDITOR.tools.transparentImageData,
 			'class': 'cke_reset cke_widget_mask'
 		} );
 		widget.wrapper.append( img );
