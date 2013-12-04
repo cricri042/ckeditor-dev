@@ -524,8 +524,8 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						type: 'file',
 						id: 'upload',
 						label: lang.btnUpload,
-						style: 'height:40px',
-						size: 38
+						// Use width:100% to avoid input overflow in IE (#11253).
+						style: 'height:40px;width:100%;'
 					},
 					{
 						type: 'fileButton',
