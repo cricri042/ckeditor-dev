@@ -29,7 +29,7 @@ CKEDITOR.plugins.add( 'divarea', {
 					};
 				} );
 
-			editor.setData( editor.getData( 1 ), callback, 0, 1 );
+			editor.setData( editor.getData( 1 ), callback );
 			editor.fire( 'contentDom' );
 		} );
 	}

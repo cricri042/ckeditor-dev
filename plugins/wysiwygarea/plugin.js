@@ -97,7 +97,7 @@
 				function onLoad( evt ) {
 					evt && evt.removeListener();
 					editor.editable( new framedWysiwyg( editor, iframe.$.contentWindow.document.body ) );
-					editor.setData( editor.getData( 1 ), callback, 0, 1 );
+					editor.setData( editor.getData( 1 ), callback );
 				}
 			} );
 		}

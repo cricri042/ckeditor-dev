@@ -29,6 +29,20 @@
 			this.editor = editor;
 
 			/**
+			 * Indicates editable initialization status. The following statuses are available:
+			 *
+			 *	* **unloaded**: the initial state; editable's instance has been created but
+			 *  is not fully loaded (in particular has no data),
+			 *	* **ready**: editable is fully initialized; `ready` status is set after
+			 *  first {@link CKEDITOR.editor#method-setData} has been called.
+			 *
+			 * @since 4.3.2
+			 * @readonly
+			 * @property {String}
+			 */
+			this.status = 'unloaded';
+
+			/**
 			 * Indicate whether the editable element has gained focus.
 			 *
 			 * @property {Boolean} hasFocus
@@ -418,6 +432,11 @@
 			 */
 			setup: function() {
 				var editor = this.editor;
+
+				editor.once( 'setData', function() {
+					// Editable is ready after first set data.
+					this.status = 'ready';
+				}, this );
 
 				// Handle the load/read of editor data/snapshot.
 				this.attachListener( editor, 'beforeGetData', function() {
