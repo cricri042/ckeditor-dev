@@ -419,6 +419,10 @@
 				!this.editor.editable() || this.editor.editable().status != 'ready' )
 				return false;
 
+			// Do not change snapshots stack when editor is in mode difference than 'wysiwyg'.
+			if ( this.editor.mode && this.editor.mode != 'wysiwyg' )
+				return false;
+
 			var snapshots = this.snapshots;
 
 			// Get a content image.
