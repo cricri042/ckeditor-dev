@@ -935,8 +935,7 @@
 			!internal && this.fire( 'saveSnapshot' );
 
 			if ( callback ) {
-				this.on( 'dataReady', function( evt ) {
-					evt.removeListener();
+				this.once( 'dataReady', function( evt ) {
 					callback.call( evt.editor );
 				} );
 			}
