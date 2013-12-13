@@ -35,6 +35,7 @@
 			 *  is not fully loaded (in particular has no data),
 			 *	* **ready**: editable is fully initialized; `ready` status is set after
 			 *  first {@link CKEDITOR.editor#method-setData} has been called.
+			 *  * **detached**: the editable has been detached.
 			 *
 			 * @since 4.3.2
 			 * @readonly
@@ -404,6 +405,8 @@
 			detach: function() {
 				// Cleanup the element.
 				this.removeClass( 'cke_editable' );
+
+				this.status = 'detached';
 
 				// Save the editor reference which will be lost after
 				// calling detach from super class.
