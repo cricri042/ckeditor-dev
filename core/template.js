@@ -39,7 +39,7 @@
 			this.output = cache[ source ];
 		else {
 			var fn = source
-			// Escape all quotation marks (").
+			// Escape chars like slash "\" or single quote "'".
 			.replace( reEscapableChars, '\\$1' )
 			.replace( reNewLine, '\\n' )
 			.replace( reCarriageReturn, '\\r' )
