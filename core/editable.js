@@ -438,7 +438,8 @@
 
 				editor.once( 'setData', function() {
 					// Editable is ready after first set data.
-					this.status = 'ready';
+					if ( this.status == 'unloaded' )
+						this.status = 'ready';
 				}, this );
 
 				// Handle the load/read of editor data/snapshot.
