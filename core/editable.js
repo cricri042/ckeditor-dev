@@ -32,10 +32,10 @@
 			 * Indicates editable initialization status. The following statuses are available:
 			 *
 			 *	* **unloaded**: the initial state; editable's instance has been created but
-			 *  is not fully loaded (in particular has no data),
+			 *	is not fully loaded (in particular has no data),
 			 *	* **ready**: editable is fully initialized; `ready` status is set after
-			 *  first {@link CKEDITOR.editor#method-setData} has been called.
-			 *  * **detached**: the editable has been detached.
+			 *	first {@link CKEDITOR.editor#method-setData} has been called.
+			 *	* **detached**: the editable has been detached.
 			 *
 			 * @since 4.3.2
 			 * @readonly
