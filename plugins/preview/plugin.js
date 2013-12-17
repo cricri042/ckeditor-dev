@@ -34,7 +34,7 @@
 
 				bodyHtml += '>';
 
-				sHTML = editor.config.docType + '<html dir="' + editor.config.contentsLangDirection + '">' +
+				sHTML = '<html dir="' + editor.config.contentsLangDirection + '">' +
 					'<head>' +
 						baseTag +
 						'<title>' + editor.lang.preview.preview + '</title>' +
@@ -61,36 +61,26 @@
 			if ( !editor.fire( 'contentPreview', eventData = { dataValue: sHTML } ) )
 				return false;
 
-			var sOpenUrl = '';
-			if ( CKEDITOR.env.ie ) {
-				window._cke_htmlToLoad = eventData.dataValue;
-				sOpenUrl = 'javascript:void( (function(){' +
-					'document.open();' +
-					// Support for custom document.domain.
-					// Strip comments and replace parent with window.opener in the function body.
-					( '(' + CKEDITOR.tools.fixDomain + ')();' ).replace( /\/\/.*?\n/g, '' ).replace( /parent\./g, 'window.opener.' ) +
-					'document.write( window.opener._cke_htmlToLoad );' +
-					'document.close();' +
-					'window.opener._cke_htmlToLoad = null;' +
-				'})() )';
-			}
+			var isCustomDomain = CKEDITOR.env.isCustomDomain(),
+				sOpenUrl = '',
+				urlQueryVars = [];
 
 			// With Firefox only, we need to open a special preview page, so
 			// anchors will work properly on it. (#9047)
-			if ( CKEDITOR.env.gecko ) {
-				window._cke_htmlToLoad = eventData.dataValue;
-				sOpenUrl = pluginPath + 'preview.html';
-			}
+			window._cke_htmlToLoad = eventData.dataValue;
+			sOpenUrl = pluginPath + 'preview.html';
+
+			urlQueryVars.push( 'base=' + encodeURIComponent( getBaseHref( CKEDITOR.document.getWindow(), editor ) ) );
+
+			if ( isCustomDomain )
+				urlQueryVars.push( 'domain=' + encodeURIComponent( CKEDITOR.document.$.domain ) );
+
+			// Building query url part.
+			if ( urlQueryVars.length )
+				sOpenUrl += ( '?' + urlQueryVars.join( '&' ) );
 
 			var oWindow = window.open( sOpenUrl, null, 'toolbar=yes,location=no,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=' +
 				iWidth + ',height=' + iHeight + ',left=' + iLeft );
-
-			if ( !CKEDITOR.env.ie && !CKEDITOR.env.gecko ) {
-				var doc = oWindow.document;
-				doc.open();
-				doc.write( eventData.dataValue );
-				doc.close();
-			}
 
 			return true;
 		}
@@ -119,6 +109,32 @@
 			} );
 		}
 	} );
+
+	// Returns base href for given window. Function also expects to have editor
+	// specified in order to check its configuration.
+	function getBaseHref( ckWindow, editor ) {
+		// If custom base is set in config return it without any processing.
+		if ( editor.config.baseHref )
+			return editor.config.baseHref;
+
+		var wnd = ckWindow.$,
+			doc = wnd.document,
+			baseTags,
+			fullURI;
+
+		if ( doc.baseURI )
+			fullURI = doc.baseURI;
+		else if ( ( baseTags = doc.getElementsByTagName( 'base' ) ) && baseTags.length )
+			fullURI = baseTags[ 0 ].getAttribute( 'href' );
+		else
+			fullURI = wnd.location.href;
+
+		// Stripping potential tailing file name.
+		if ( fullURI.search( '/' ) !== -1 )
+			return fullURI.slice( 0, fullURI.lastIndexOf( '/' ) + 1 );
+		else
+			return fullURI;
+	}
 } )();
 
 /**

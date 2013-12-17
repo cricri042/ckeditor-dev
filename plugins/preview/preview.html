@@ -1,10 +1,52 @@
-﻿<script>
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<base href="">
+	</head>
+	<body>
+		<script>
+		var doc = document,
+			baseHref;
 
-var doc = document;
-doc.open();
-doc.write( window.opener._cke_htmlToLoad );
-doc.close();
+		// Retrieving custom domain (if any) from url query part. We assume that only
+		// domain variable is passed so there's hardcoded offset for var value.
+		if ( location.search ) {
+			//alert( location.search );
+			var args = location.search.slice( 1 ).split( '&' );
 
-delete window.opener._cke_htmlToLoad;
+			// Base url is expected to be passed (optionally) as first parameter.
+			baseHref = decodeURIComponent( args[ 0 ] ).slice( 5 );
+			//alert( baseHref );
 
-</script>
+			// Domain is expected to be passed (optionally) as second parameter.
+			if ( args.length > 1 ) {
+				//alert( args[ 1 ].slice( 7 ) );
+				doc.domain = decodeURIComponent( args[ 1 ].slice( 7 ) );
+			}
+		}
+
+		// If custom base addr was sent.
+		if( baseHref )
+			doc.getElementsByTagName('base')[ 0 ].setAttribute( 'href', baseHref );
+
+		doc.open();
+		doc.write( window.opener._cke_htmlToLoad );
+		doc.close();
+
+		// Fix for anchors.
+		var links = document.querySelectorAll( 'a[href^="#"]' );
+
+		for ( var i = links.length-1; i >= 0; i-- ) {
+			var curLink = links.item( i );
+			//curLink.setAttribute( 'href', window.location.href + curLink.getAttribute('href') );
+			curLink.setAttribute( 'href', location.origin + location.pathname + location.search + curLink.getAttribute('href') );
+		}
+
+		// Setting title.
+		if ( !document.title )
+			document.title = 'CKEditor preview';
+		</script>
+	</body>
+</html>
