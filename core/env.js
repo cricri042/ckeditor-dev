@@ -117,12 +117,8 @@ if ( !CKEDITOR.env ) {
 			 *			alert( 'I\'m in a custom domain!' );
 			 *
 			 * @returns {Boolean} `true` if a custom domain is enabled.
-			 * @deprecated
 			 */
 			isCustomDomain: function() {
-				if ( !this.ie )
-					return false;
-
 				var domain = document.domain,
 					hostname = window.location.hostname;
 
