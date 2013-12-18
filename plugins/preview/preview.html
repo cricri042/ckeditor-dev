@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title></title>
 		<base href="">
 	</head>
 	<body>
@@ -13,23 +12,20 @@
 		// Retrieving custom domain (if any) from url query part. We assume that only
 		// domain variable is passed so there's hardcoded offset for var value.
 		if ( location.search ) {
-			//alert( location.search );
-			var args = location.search.slice( 1 ).split( '&' );
+			var matchResult;
 
-			// Base url is expected to be passed (optionally) as first parameter.
-			baseHref = decodeURIComponent( args[ 0 ] ).slice( 5 );
-			//alert( baseHref );
+			// Looking for base address in url query part (if present).
+			if ( ( matchResult = location.search.match( /(?:[\?&]base=)(.+?)(?=&|#|$)/ ) ) )
+				baseHref = decodeURIComponent( matchResult[ 1 ] );
 
-			// Domain is expected to be passed (optionally) as second parameter.
-			if ( args.length > 1 ) {
-				//alert( args[ 1 ].slice( 7 ) );
-				doc.domain = decodeURIComponent( args[ 1 ].slice( 7 ) );
-			}
+			// Looking for domain in url query part (if present).
+			if ( ( matchResult = location.search.match( /(?:[\?&]domain=)(.+?)(?=&|#|$)/ ) ) )
+				doc.domain = decodeURIComponent( matchResult[ 1 ] );
 		}
 
 		// If custom base addr was sent.
-		if( baseHref )
-			doc.getElementsByTagName('base')[ 0 ].setAttribute( 'href', baseHref );
+		if ( baseHref )
+			doc.getElementsByTagName( 'base' )[ 0 ].setAttribute( 'href', baseHref );
 
 		doc.open();
 		doc.write( window.opener._cke_htmlToLoad );
@@ -38,15 +34,10 @@
 		// Fix for anchors.
 		var links = document.querySelectorAll( 'a[href^="#"]' );
 
-		for ( var i = links.length-1; i >= 0; i-- ) {
+		for ( var i = links.length - 1; i >= 0; i-- ) {
 			var curLink = links.item( i );
-			//curLink.setAttribute( 'href', window.location.href + curLink.getAttribute('href') );
-			curLink.setAttribute( 'href', location.origin + location.pathname + location.search + curLink.getAttribute('href') );
+			curLink.setAttribute( 'href', location.origin + location.pathname + location.search + curLink.getAttribute( 'href' ) );
 		}
-
-		// Setting title.
-		if ( !document.title )
-			document.title = 'CKEditor preview';
 		</script>
 	</body>
 </html>
