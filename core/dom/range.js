@@ -1123,15 +1123,18 @@ CKEDITOR.dom.range = function( root ) {
 						// be changed: "<p><i>[foo] </i>bar</p>".
 						var walkerRange = new CKEDITOR.dom.range( boundary );
 						walkerRange.setStart( startContainer, startOffset );
+						// The guard will find the end of range so I put boundary here.
 						walkerRange.setEndAt( boundary, CKEDITOR.POSITION_BEFORE_END );
 
 						var walker = new CKEDITOR.dom.walker( walkerRange ),
 							node;
 
 						walker.guard = function( node, movingOut ) {
+							// Stop if you exit block.
 							if ( node.type == CKEDITOR.NODE_ELEMENT && node.isBlockBoundary() )
 								return false;
 
+							// Stop if you exit contenteditable.
 							if ( node.type == CKEDITOR.NODE_ELEMENT && node.getAttribute( 'contenteditable' ) == 'false' )
 								return false;
 
@@ -1139,9 +1142,11 @@ CKEDITOR.dom.range = function( root ) {
 						}
 
 						while ( ( node = walker.next() ) ) {
-							if ( node.type != CKEDITOR.NODE_TEXT )
+							if ( node.type != CKEDITOR.NODE_TEXT ) {
+								// Stop if you enter to any node (walker.next() will return node only
+								// it goes out, not if it is go into node).
 								return false;
-							else {
+							} else {
 								// Trim the first node to startOffset.
 								if ( node != startContainer )
 									siblingText = node.getText();
