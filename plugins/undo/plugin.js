@@ -416,9 +416,11 @@
 		save: function( onContentOnly, image, autoFireChange ) {
 			// Do not change snapshots stack when locked, editor is not ready,
 			// editable is not ready or when editor is in mode difference than 'wysiwyg'.
-			if ( this.locked || this.editor.status != 'ready' ||
-				!this.editor.editable() || this.editor.editable().status != 'ready' ||
-				this.editor.mode != 'wysiwyg' )
+			if ( this.locked || this.editor.status != 'ready' || this.editor.mode != 'wysiwyg' )
+				return false;
+
+			var editable = this.editor.editable();
+			if ( !editable || editable.status != 'ready' )
 				return false;
 
 			var snapshots = this.snapshots;
