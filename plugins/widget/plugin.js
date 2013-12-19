@@ -94,6 +94,9 @@
 			 * @member CKEDITOR.editor
 			 */
 			editor.widgets = new Repository( editor );
+			editor.on( 'contentDom', function( evt ) {
+				setupEditableListeners( evt.editor );
+			} );
 		},
 
 		afterInit: function( editor ) {
@@ -1320,6 +1323,19 @@
 	//
 	// REPOSITORY helpers -----------------------------------------------------
 	//
+
+	// Attaches listener for mouseover to editable. When mouseover occured on
+	// widget, it will recalculate its handler position.
+	// @param {CKEDITOR.editor} editor
+	function setupEditableListeners( editor ) {
+		editor.editable().on( 'mouseover', function( evt ) {
+			var evtSource = !CKEDITOR.env.gecko ? evt.data.$.srcElement : evt.data.$.originalTarget,
+				widget = editor.widgets.getByElement( new CKEDITOR.dom.element( evtSource ) );
+
+			if ( widget )
+				positionDragHandler( widget );
+		} );
+	}
 
 	function addWidgetButtons( editor ) {
 		var widgets = editor.widgets.registered,
@@ -2744,12 +2760,6 @@
 
 		if ( widgetDef.edit )
 			widget.on( 'edit', widgetDef.edit );
-
-		if ( widget.draggable ) {
-			widget.on( 'data', function() {
-				positionDragHandler( widget );
-			}, null, null, 999 );
-		}
 	}
 
 	function setupWidgetData( widget, startupData ) {
