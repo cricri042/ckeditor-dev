@@ -375,6 +375,11 @@
 					data = this.editor.dataProcessor.toHtml( data );
 
 				this.setHtml( data );
+
+				// Editable is ready after first setData.
+				if ( this.status == 'unloaded' )
+					this.status = 'ready';
+
 				this.editor.fire( 'dataReady' );
 			},
 
@@ -435,12 +440,6 @@
 			 */
 			setup: function() {
 				var editor = this.editor;
-
-				editor.once( 'setData', function() {
-					// Editable is ready after first set data.
-					if ( this.status == 'unloaded' )
-						this.status = 'ready';
-				}, this );
 
 				// Handle the load/read of editor data/snapshot.
 				this.attachListener( editor, 'beforeGetData', function() {
