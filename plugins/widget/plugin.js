@@ -1329,7 +1329,7 @@
 	// @param {CKEDITOR.editor} editor
 	function setupEditableListeners( editor ) {
 		editor.editable().on( 'mouseover', function( evt ) {
-			var evtSource = !CKEDITOR.env.gecko ? evt.data.$.srcElement : evt.data.$.originalTarget,
+			var evtSource = evt.data.$[ CKEDITOR.env.gecko ? 'originalTarget' : 'srcElement' ],
 				widget = editor.widgets.getByElement( new CKEDITOR.dom.element( evtSource ) );
 
 			if ( widget )
