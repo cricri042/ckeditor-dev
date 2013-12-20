@@ -38,11 +38,19 @@
 				canUndo: false
 			} );
 
-			editor.setKeystroke( [
-				[ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
-				[ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
-				[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 90 /*Z*/, 'redo' ]
-			] );
+			var keystrokes = {};
+				keystrokes[ CKEDITOR.CTRL + 90 /*Z*/ ] = 'undo';
+				keystrokes[ CKEDITOR.CTRL + 89 /*Y*/ ] = 'redo';
+				keystrokes[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 90 /*Z*/ ] = 'redo';
+
+			editor.setKeystroke( ( function() {
+				var arr = [];
+
+				for ( var k in keystrokes )
+					arr.push( [ k, keystrokes[ k ] ] );
+
+				return arr;
+			} )() );
 
 			undoManager.onChange = function() {
 				undoCommand.setState( undoManager.undoable() ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED );
@@ -67,7 +75,11 @@
 			// Registering keydown on every document recreation.(#3844)
 			editor.on( 'contentDom', function() {
 				editor.editable().on( 'keydown', function( event ) {
-					var keystroke = event.data.getKey();
+					var keystroke = event.data.getKeystroke();
+
+					// Make sure the native undo is never used (#11126).
+					if ( keystroke in keystrokes )
+						return event.data.preventDefault();
 
 					if ( keystroke == 8 /*Backspace*/ || keystroke == 46 /*Delete*/ )
 						undoManager.type( keystroke, 0 );
