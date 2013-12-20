@@ -701,7 +701,7 @@
 				pastebin.insertAfter( bms[ 0 ].startNode );
 				pastebin.setStyle( 'display', 'inline' );
 			} else {
-				if ( CKEDITOR.env.webkit ) {
+				if ( CKEDITOR.env.webkit || CKEDITOR.env.gecko ) {
 					// It's better to paste close to the real paste destination, so inherited styles
 					// (which Webkits will try to compensate by styling span) differs less from the destination's one.
 					editable.append( pastebin );
