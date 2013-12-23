@@ -32,7 +32,7 @@
 				'bottom:-5px;' +
 				'right:-5px;' +
 				'background:#000;' +
-				'outline:1px solid #fff;' +
+				'border:1px solid #fff;' +
 				'cursor:se-resize;' +
 			'}' +
 			'.cke_image_resizer_wrapper{' +
