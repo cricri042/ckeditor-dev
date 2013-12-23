@@ -1499,6 +1499,7 @@
 					// Add cke_widget_new class because otherwise
 					// widget will not be created on such wrapper.
 					wrapper.addClass( 'cke_widget_new' );
+					wrapper.addClass( 'cke_widget_reinit' );
 					newInstances.push( this.initOn( wrapper.getFirst( isWidgetElement2 ) ) );
 				}
 			}
@@ -2521,6 +2522,12 @@
 			img = new CKEDITOR.dom.element( 'img', editor.document ),
 			container = new CKEDITOR.dom.element( 'span', editor.document );
 
+		if ( widget.wrapper.hasClass( 'cke_widget_reinit' ) ) {
+			// Widget is being reinitialized, therefore drag handler must be present.
+			widget.dragHandlerContainer = widget.wrapper.findOne( '.cke_widget_drag_handler' );
+			return ;
+		}
+
 		container.setAttributes( {
 			'class': 'cke_reset cke_widget_drag_handler_container',
 			// Split background and background-image for IE8 which will break on rgba().
@@ -2711,6 +2718,7 @@
 		}
 
 		widget.wrapper.removeClass( 'cke_widget_new' );
+		widget.wrapper.removeClass( 'cke_widget_reinit' );
 		widget.element.addClass( 'cke_widget_element' );
 
 		widget.on( 'key', function( evt ) {
